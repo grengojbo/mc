@@ -68,7 +68,14 @@ coverage: build
 # Builds minio locally.
 build: checks
 	@echo "Building minio binary to './mc'"
-	@GO_FLAGS="" CGO_ENABLED=0 go build -tags kqueue --ldflags $(BUILD_LDFLAGS) -o $(PWD)/mc
+	@GO_FLAGS="" CGO_ENABLED=0 go build -tags kqueue --ldflags $(BUILD_LDFLAGS) -o $(PWD)/mc-cli
+
+build-arm: checks
+	@echo "Building minio binary to './mc-cli'"
+	@echo "GOARM=7 $(PWD)/mc-cli-armv7l"
+	@GO_FLAGS="" CGO_ENABLED=0 GOARCH=arm GOARM=7 go build -tags kqueue --ldflags $(BUILD_LDFLAGS) -o $(PWD)/mc-cli-armv7l
+	@echo "GOARM=6 $(PWD)/mc-cli-armv6l"
+	@GO_FLAGS="" CGO_ENABLED=0 GOARCH=arm GOARM=6 go build -tags kqueue --ldflags $(BUILD_LDFLAGS) -o $(PWD)/mc-cli-armv6l
 
 pkg-add:
 	@echo "Adding new package $(PKG)"
